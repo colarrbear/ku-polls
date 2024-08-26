@@ -1,3 +1,4 @@
+"""Unit tests for the polls app."""
 import datetime
 
 from django.utils import timezone
