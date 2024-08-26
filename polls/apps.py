@@ -1,5 +1,4 @@
-"""The `PollsConfig` class is a Django application configuration class for the `polls` app with a
-default auto field set to `BigAutoField`."""
+"""Apps configuration for the `polls` application."""
 
 from django.apps import AppConfig
 

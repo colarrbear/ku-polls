@@ -1,4 +1,5 @@
-"""This Python code snippet is defining URL patterns for a Django web application. """
+"""This Python code snippet is defining URL patterns for
+a Django web application. """
 
 from django.urls import path
 
