@@ -88,4 +88,4 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 
 note: Iteration 2, 3 and 4 is in progress.
 
-[django-tutorial](https://docs.djangoproject.com/en/4.1/intro/tutorial01/)
+[django-tutorial](https://docs.djangoproject.com/en/5.1/intro/tutorial01/)
