@@ -11,7 +11,7 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 Requires Python 3.10 or newer.  Required Python packages are listed in [requirements.txt](./requirements.txt). 
 
 ## Installation and Configuration
-To be added.
+Check from [Install and Configure](Installation.md)
 
 ## Running the Application
 
