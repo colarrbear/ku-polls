@@ -49,8 +49,8 @@
 
 8. Load initial data
    ```terminal
-   python manage.py loaddata data/polls-no-vote.json 
-   python manage.py loaddata data/users.json
+   python manage.py loaddata data/polls-v1.json
+   (X) python manage.py loaddata data/users.json
    ```
 
 9. Run test
