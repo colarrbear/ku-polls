@@ -1,5 +1,3 @@
-[![Django CI](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml)
-
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
 additional features.
