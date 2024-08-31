@@ -84,6 +84,6 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 - [Iteration 3 Plan](../../wiki/Iteration-3-Plan)
 - [Iteration 4 Plan](../../wiki/Iteration-4-Plan)
 
-note: Iteration 2, 3 and 4 is in progress.
+note: Iteration 3 and 4 is in progress.
 
 [django-tutorial](https://docs.djangoproject.com/en/5.1/intro/tutorial01/)
