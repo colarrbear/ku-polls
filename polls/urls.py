@@ -2,6 +2,7 @@
 a Django web application. """
 
 from django.urls import path
+from django.views.generic.base import RedirectView
 
 from . import views
 
@@ -15,4 +16,7 @@ urlpatterns = [
     path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
     # ex: /polls/5/vote/
     path("<int:question_id>/vote/", views.vote, name="vote"),
+    # redirect base url to index page
+    path("", RedirectView.as_view(url="/polls/", permanent=True),
+         name="index"),
 ]

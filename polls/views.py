@@ -6,10 +6,11 @@ including displaying, voting, and getting results for questions.
 from django.db.models import F
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib import messages
 
 from .models import Choice, Question
 
@@ -55,8 +56,8 @@ class ResultsView(generic.DetailView):
 
 def vote(request, question_id):
     """
-    A view function named `vote` in a Django polling application. 
-    This function is responsible for handling user votes on a specific question. 
+    A view function named `vote` in a Django polling application.
+    This function is responsible for handling user votes on a specific question.
     """
     question = get_object_or_404(Question, pk=question_id)
     try:
