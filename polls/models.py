@@ -60,7 +60,7 @@ class Question(models.Model):
         now = timezone.now()
         if not self.is_published():
             return False
-        if self.end_date is None or self.end_date >= now:
+        if self.end_date is None or self.pub_date <= now <= self.end_date:
             return True
         return False
 
