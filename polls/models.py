@@ -19,7 +19,7 @@ class Question(models.Model):
     method `was_published_recently` A method to check if the question was
     """
     question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField("date published", auto_now_add=False)
+    pub_date = models.DateTimeField("date published", default=timezone.now)
     end_date = models.DateTimeField("date ended", auto_now_add=False,
                                     null=True, blank=True, default=None)
 
@@ -45,19 +45,18 @@ class Question(models.Model):
 
     def is_published(self):
         """
-        return: The `is_published` method returns a boolean value
-        indicating whether the `pub_date` of the question is in the past.
+        return True if the question is published, False otherwise.
         """
-        now = timezone.now()
+        now = timezone.localtime()  # change to local time
         return self.pub_date <= now
 
     def can_vote(self):
         """
-        returns True if voting is allowed for this question.
-        That means, the current date/time is between the pub_date and end_date.
-        If end_date is null then can vote anytime after pub_date.
+        Returns True if voting is allowed:
+        - Voting is allowed if the current local date-time is after pub_date.
+        - If end_date is not null, the current date-time should be before end_date.
         """
-        now = timezone.now()
+        now = timezone.localtime()  # change to local time
         if not self.is_published():
             return False
         if self.end_date is None or self.pub_date <= now <= self.end_date:
