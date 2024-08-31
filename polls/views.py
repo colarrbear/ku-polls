@@ -5,7 +5,7 @@ including displaying, voting, and getting results for questions.
 
 from django.db.models import F
 from django.db.models.query import QuerySet
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
@@ -44,6 +44,27 @@ class DetailView(generic.DetailView):
         """
         return Question.objects.filter(pub_date__lte=timezone.now())
 
+    def get(self, request, *args, **kwargs):
+        """
+        Based on below document, if poll is not published or closed,
+        redirect to index page.
+        https://docs.djangoproject.com/en/5.1/ref/class-based-views/base/
+        """
+        try:
+            selected_question = get_object_or_404(Question, pk=kwargs["pk"])
+        except Http404:
+            messages.error(request, "Question does not exist.")
+            return redirect("polls:index")
+        # Check if the question is published
+        if not selected_question.is_published():
+            messages.error(request, "Question is not published.")
+            return redirect("polls:index")
+        # Check if the question can be voted on
+        if not selected_question.can_vote():
+            messages.error(request, "Question is closed.")
+            return redirect("polls:index")
+        return super().get(request, *args, **kwargs)
+
 
 class ResultsView(generic.DetailView):
     """
@@ -52,6 +73,25 @@ class ResultsView(generic.DetailView):
     """
     model = Question
     template_name = "polls/results.html"
+
+    def get(self, request, *args, **kwargs):
+        """
+        This function retrieves the results for a specific question.
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        try:
+            selected_question = get_object_or_404(Question, pk=kwargs["pk"])
+        except Http404:
+            messages.error(request, "Question does not exist.")
+            return redirect("polls:index")
+        # Check if the question is published
+        if not selected_question.is_published():
+            messages.error(request, "Question is not published.")
+            return redirect("polls:index")
+        return super().get(request, *args, **kwargs)
 
 
 def vote(request, question_id):
