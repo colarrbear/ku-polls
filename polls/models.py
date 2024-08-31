@@ -43,6 +43,27 @@ class Question(models.Model):
         """
         return self.question_text
 
+    def is_published(self):
+        """
+        return: The `is_published` method returns a boolean value
+        indicating whether the `pub_date` of the question is in the past.
+        """
+        now = timezone.now()
+        return self.pub_date <= now
+
+    def can_vote(self):
+        """
+        returns True if voting is allowed for this question.
+        That means, the current date/time is between the pub_date and end_date.
+        If end_date is null then can vote anytime after pub_date.
+        """
+        now = timezone.now()
+        if not self.is_published():
+            return False
+        if self.end_date is None or self.end_date >= now:
+            return True
+        return False
+
 
 class Choice(models.Model):
     """
