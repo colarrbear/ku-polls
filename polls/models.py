@@ -47,7 +47,7 @@ class Question(models.Model):
         """
         return True if the question is published, False otherwise.
         """
-        now = timezone.now()  # change to local time
+        now = timezone.now()
         return self.pub_date <= now
 
     def can_vote(self):
@@ -56,7 +56,7 @@ class Question(models.Model):
         - Voting is allowed if the current local date-time is after pub_date.
         - If end_date is not null, the current date-time should be before end_date.
         """
-        now = timezone.now()  # change to local time
+        now = timezone.now()
         if not self.is_published():
             return False
         if self.end_date is None or self.pub_date <= now <= self.end_date:
