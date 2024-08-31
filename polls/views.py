@@ -101,6 +101,18 @@ def vote(request, question_id):
     This function is responsible for handling user votes on a specific question.
     """
     question = get_object_or_404(Question, pk=question_id)
+
+    # Check if user has already voted per poll
+    if request.session.get(f'has_voted_{question_id}', False):
+        return render(
+            request,
+            "polls/detail.html",
+            {
+                "question": question,
+                "error_message": "You have already voted.",
+            },
+        )
+
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
@@ -115,5 +127,9 @@ def vote(request, question_id):
     else:
         selected_choice.votes = F("votes") + 1
         selected_choice.save()
+
+        # mark this user as having voted
+        request.session[f'has_voted_{question_id}'] = True
+
         return HttpResponseRedirect(
             reverse("polls:results", args=(question.id,)))
