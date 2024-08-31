@@ -5,5 +5,13 @@ li a {
 }
 
 body {
-    background: white url("images/background.png") no-repeat;
+    background: deeppink url("images/background.png") no-repeat;
+}
+
+.polls_list{
+    border: 5px outset green;
+    background-color: black;
+}
+div{
+    display: block;
 }

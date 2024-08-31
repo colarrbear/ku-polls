@@ -1,8 +1,8 @@
 """This Python code snippet is defining URL patterns for
 a Django web application. """
 
-from django.urls import path, include
-from django.views.generic.base import RedirectView
+from django.urls import path
+from django.http import HttpResponseRedirect
 
 from . import views
 

@@ -4,10 +4,11 @@ including displaying, voting, and getting results for questions.
 """
 
 from django.db.models import F
+from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.views.generic.base import RedirectView
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
