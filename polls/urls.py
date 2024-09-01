@@ -1,8 +1,6 @@
-"""This Python code snippet is defining URL patterns for
-a Django web application. """
+"""Urls path for the `polls` app."""
 
 from django.urls import path
-from django.http import HttpResponseRedirect
 
 from . import views
 

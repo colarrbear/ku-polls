@@ -1,14 +1,9 @@
-"""
-Defines views and functions for a Django polling application,
-including displaying, voting, and getting results for questions.
-"""
+"""Define views for the polls app."""
 
 from django.db.models import F
 from django.urls import reverse
-from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic.base import RedirectView
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
@@ -17,18 +12,16 @@ from .models import Choice, Question
 
 
 class IndexView(generic.ListView):
-    """
-    The `IndexView` class is a generic ListView that displays
-    the last five published questions in a template named "polls/index.html".
-    """
+    """Display five most recent polls."""
+
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        """Return the last five published questions not including polls
-        set to be published in the future."""
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by(
-            "-pub_date")[:5]
+        """Return the last five published questions."""
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by("-pub_date")[:5]
 
 
 class DetailView(generic.DetailView):
@@ -42,7 +35,8 @@ class DetailView(generic.DetailView):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
     def get(self, request, *args, **kwargs):
-        """If poll is not published or closed, redirect to index page.
+        """
+        If poll is not published or closed, redirect to index page.
 
         https://docs.djangoproject.com/en/5.1/ref/class-based-views/base/
         """
@@ -76,7 +70,7 @@ class ResultsView(generic.DetailView):
             messages.error(request, "Question does not exist.")
             return redirect("polls:index")
 
-            # Check if the question is published
+        # Check if the question is published
         if not selected_question.is_published():
             messages.error(request, "This question is not yet published.")
             return redirect("polls:index")
@@ -95,7 +89,7 @@ def vote(request, question_id):
             {
                 "question": question,
                 "error_message": "You have already voted.",
-            },
+            }
         )
 
     try:
@@ -107,7 +101,7 @@ def vote(request, question_id):
             {
                 "question": question,
                 "error_message": "You didn't select a choice.",
-            },
+            }
         )
     else:
         selected_choice.votes = F("votes") + 1
@@ -117,4 +111,5 @@ def vote(request, question_id):
         request.session[f'has_voted_{question_id}'] = True
 
         return HttpResponseRedirect(
-            reverse("polls:results", args=(question.id,)))
+            reverse("polls:results", args=(question.id,))
+        )

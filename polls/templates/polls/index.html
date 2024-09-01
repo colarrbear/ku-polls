@@ -1,3 +1,53 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--{% load static %}-->
+<!--<head>-->
+<!--    <title>Ku-Polls</title>-->
+<!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
+<!--</head>-->
+
+<!--<body>-->
+<!--&lt;!&ndash; Display Django messages if any &ndash;&gt;-->
+<!--{% if messages %}-->
+<!--<ul class="messages">-->
+<!--    {% for message in messages %}-->
+<!--    <li-->
+<!--    {% if message.tags %} class="{{ message.tags }}"{% endif %}>-->
+<!--    {{ message }}-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+<!--{% endif %}-->
+
+<!--{% if latest_question_list %}-->
+<!--<div class="question-container">-->
+<!--    {% for question in latest_question_list %}-->
+<!--    <div class="question-row">-->
+<!--        <div class="question-card">-->
+<!--            <a href="{% url 'polls:detail' question.id %}"-->
+<!--               class="question-link">{{ question.question_text }}</a>-->
+<!--            &lt;!&ndash; Display the poll status &ndash;&gt;-->
+<!--            <p>-->
+<!--                {% if question.can_vote %}-->
+<!--                    Poll Status: Available-->
+<!--                {% else %}-->
+<!--                    Poll Status: Closed-->
+<!--                {% endif %}-->
+<!--            </p>-->
+<!--        </div>-->
+<!--        <div class="result-card">-->
+<!--            <a href="{% url 'polls:results' question.id %}"-->
+<!--               class="result-link">Results</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+<!--{% else %}-->
+<!--<p>No polls are available.</p>-->
+<!--{% endif %}-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
@@ -27,17 +77,19 @@
             <a href="{% url 'polls:detail' question.id %}"
                class="question-link">{{ question.question_text }}</a>
             <!-- Display the poll status -->
-            <p>
+            <p class="poll-status">
                 {% if question.can_vote %}
                     Poll Status: Available
                 {% else %}
                     Poll Status: Closed
                 {% endif %}
             </p>
-        </div>
-        <div class="result-card">
-            <a href="{% url 'polls:results' question.id %}"
-               class="result-link">Results</a>
+            <div class="question-actions">
+                {% if question.can_vote %}
+                <a href="{% url 'polls:detail' question.id %}" class="vote-button">Vote</a>
+                {% endif %}
+                <a href="{% url 'polls:results' question.id %}" class="result-button">Results</a>
+            </div>
         </div>
     </div>
     {% endfor %}

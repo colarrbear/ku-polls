@@ -1,27 +1,25 @@
-"""The above code defines Django models for a Question and
-Choice with related fields and methods."""
+"""Contains the models for the Polls app."""
+import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib import admin
 
-import datetime
-
 
 class Question(models.Model):
-    """
-    Defines a model with a question text and publication date, along with a
-    method to check if the question was published recently.
+    """Defines a model for questions in a poll.
 
-    attribute `question_text` Text of the question.
-    attribute `pub_date` Date the question was published.
-    attribute `end_date` Date the question will end.
-        If null, can be voted on indefinitely.
-    method `was_published_recently` A method to check if the question was
+    Attributes:
+        question_text (str): Text of the question.
+        pub_date (datetime): Date the question was published.
+        end_date (datetime): Date the question will end. If null, can be voted
+                             on indefinitely.
     """
+
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField("date published", default=timezone.now)
-    end_date = models.DateTimeField("date ended", auto_now_add=False,
-                                    null=True, blank=True, default=None)
+    end_date = models.DateTimeField(
+        "date ended", auto_now_add=False, null=True, blank=True, default=None
+    )
 
     @admin.display(
         boolean=True,
@@ -29,32 +27,32 @@ class Question(models.Model):
         description="Published recently?",
     )
     def was_published_recently(self):
-        """
-        return: The `was_published_recently` method returns a boolean value
-        indicating whether the `pub_date` of the question falls within
-        the last 24 hours from the current time.
+        """Check if the question was published in the last 24 hours.
+
+        Returns:
+            bool: True if published within last 24 hours, False otherwise.
         """
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
     def __str__(self):
-        """
-        return: The `__str__` method returns the question text.
-        """
+        """Return the question text."""
         return self.question_text
 
     def is_published(self):
-        """
-        return True if the question is published, False otherwise.
+        """Check if the question is published.
+
+        Returns:
+            bool: True if published, False otherwise.
         """
         now = timezone.now()
         return self.pub_date <= now
 
     def can_vote(self):
-        """
-        Returns True if voting is allowed:
-        - Voting is allowed if the current local date-time is after pub_date.
-        - If end_date is not null, the current date-time should be before end_date.
+        """Check if voting is allowed for this question.
+
+        Returns:
+            bool: True if voting is allowed, False otherwise.
         """
         now = timezone.now()
         if not self.is_published():
@@ -65,20 +63,18 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-    """
-    Defines a model with a choice text, the number of votes,
-    and a foreign key to a question.
+    """Defines a model for choices in a poll.
 
-    attribute `question` The question the choice is associated with.
-    attribute `choice_text` Text of the choice.
-    attribute `votes` Number of votes for the choice.
+    Attributes:
+        question (Question): The question the choice is associated with.
+        choice_text (str): Text of the choice.
+        votes (int): Number of votes for the choice.
     """
+
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        """
-        The `__str__` method returns the choice text.
-        """
+        """Return the choice text."""
         return self.choice_text

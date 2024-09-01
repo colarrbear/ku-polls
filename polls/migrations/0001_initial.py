@@ -6,10 +6,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    """
-    The class `Migration` defines a migration in Django that creates two models,
-    `Question` and `Choice`, with their respective fields.
-    """
+    """Initial migration for the `polls` app."""
 
     initial = True
 

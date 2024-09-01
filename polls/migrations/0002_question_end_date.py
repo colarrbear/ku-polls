@@ -5,9 +5,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    """
-    Defines the second migration for the `polls` app.
-    """
+    """Defines the second migration for the `polls` app."""
+
     dependencies = [
         ('polls', '0001_initial'),
     ]
