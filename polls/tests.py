@@ -97,16 +97,11 @@ class QuestionIndexViewTests(TestCase):
             list(response.context["latest_question_list"]),
             [],
         )
-        # self.assertQuerysetEqual(response.context["latest_question_list"], [])
 
     def test_past_question(self):
         """Questions with a past pub_date are displayed on index page."""
         question = create_question(question_text="Past question.", days=-30)
         response = self.client.get(reverse("polls:index"))
-        # self.assertQuerysetEqual(
-        #     response.context["latest_question_list"],
-        #     [question],
-        # )
         self.assertListEqual(
             list(response.context["latest_question_list"]),
             [question],
@@ -117,7 +112,6 @@ class QuestionIndexViewTests(TestCase):
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse("polls:index"))
         self.assertContains(response, "No polls are available.")
-        # self.assertQuerysetEqual(response.context["latest_question_list"], [])
         self.assertListEqual(list(response.context["latest_question_list"]),
                              [])
 
@@ -126,10 +120,6 @@ class QuestionIndexViewTests(TestCase):
         question = create_question(question_text="Past question.", days=-30)
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse("polls:index"))
-        # self.assertQuerysetEqual(
-        #     response.context["latest_question_list"],
-        #     [question],
-        # )
         self.assertListEqual(
             list(response.context["latest_question_list"]),
             [question],
@@ -140,10 +130,6 @@ class QuestionIndexViewTests(TestCase):
         question1 = create_question(question_text="Past question 1.", days=-30)
         question2 = create_question(question_text="Past question 2.", days=-5)
         response = self.client.get(reverse("polls:index"))
-        # self.assertQuerysetEqual(
-        #     response.context["latest_question_list"],
-        #     [question2, question1],
-        # )
         self.assertListEqual(
             list(response.context["latest_question_list"]),
             [question2, question1],
