@@ -37,6 +37,7 @@ class Question(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
+
     def __str__(self):
         """
         return: The `__str__` method returns the question text.
@@ -62,6 +63,17 @@ class Question(models.Model):
         if self.end_date is None or self.pub_date <= now <= self.end_date:
             return True
         return False
+
+    def __str__(self):
+        """
+        return: The `__str__` method returns the question text.
+        """
+        return self.question_text
+
+    def end_date(self):
+        """
+        :return: the ending date for voting.
+        """
 
 
 class Choice(models.Model):
