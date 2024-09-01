@@ -95,7 +95,7 @@
   "fields": {
     "question": 2,
     "choice_text": "VR",
-    "votes": 1
+    "votes": 2
   }
 },
 {
@@ -149,7 +149,7 @@
   "fields": {
     "question": 5,
     "choice_text": "Blended into a smoothie",
-    "votes": 1
+    "votes": 2
   }
 }
 ]
