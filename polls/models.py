@@ -63,17 +63,6 @@ class Question(models.Model):
             return True
         return False
 
-    def __str__(self):
-        """
-        return: The `__str__` method returns the question text.
-        """
-        return self.question_text
-
-    def end_date(self):
-        """
-        :return: the ending date for voting.
-        """
-
 
 class Choice(models.Model):
     """
