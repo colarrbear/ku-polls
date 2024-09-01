@@ -1,14 +1,12 @@
 """
 Defines views and functions for a Django polling application,
-including displaying, voting, and getting results for questions.
+including displaying, voting, and retrieving results for questions.
 """
 
 from django.db.models import F
 from django.urls import reverse
-from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic.base import RedirectView
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
@@ -18,33 +16,54 @@ from .models import Choice, Question
 
 class IndexView(generic.ListView):
     """
-    The `IndexView` class is a generic ListView that displays
-    the last five published questions in a template named "polls/index.html".
+    Display the last five published questions.
+
+    This view renders a template named "polls/index.html" and provides
+    a context variable named "latest_question_list" containing the last
+    five published questions that are not scheduled for future publication.
     """
+
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        """Return the last five published questions not including polls
-        set to be published in the future."""
+        """
+        Return the last five published questions, excluding future ones.
+
+        Questions are filtered by publication date, ensuring that only
+        those published up to the current time are displayed, and are
+        ordered by publication date in descending order.
+        """
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by(
             "-pub_date")[:5]
 
 
 class DetailView(generic.DetailView):
-    """Display the details of a poll."""
+    """
+    Display the details of a poll.
+
+    This view renders a template named "polls/detail.html" and shows
+    the details of a specific poll,
+    excluding questions that are not yet published.
+    """
 
     model = Question
     template_name = "polls/detail.html"
 
     def get_queryset(self):
-        """Excludes any questions that aren't published yet."""
+        """
+        Exclude questions that aren't published yet.
+
+        This method filters out questions that have a future publication date.
+        """
         return Question.objects.filter(pub_date__lte=timezone.now())
 
     def get(self, request, *args, **kwargs):
-        """If poll is not published or closed, redirect to index page.
+        """
+        Handle GET requests for poll details.
 
-        https://docs.djangoproject.com/en/5.1/ref/class-based-views/base/
+        If the poll is not published or is closed, redirect to the index page
+        with an appropriate error message.
         """
         try:
             selected_question = get_object_or_404(Question, pk=kwargs["pk"])
@@ -63,13 +82,24 @@ class DetailView(generic.DetailView):
 
 
 class ResultsView(generic.DetailView):
-    """Result view displays the results of a poll."""
+    """
+    Display the results of a poll.
+
+    This view renders a template named "polls/results.html" and shows the
+    results of a specific poll, ensuring that only published questions
+    are displayed.
+    """
 
     model = Question
     template_name = "polls/results.html"
 
     def get(self, request, *args, **kwargs):
-        """Get the question and check if it is published."""
+        """
+        Handle GET requests for poll results.
+
+        If the poll is not published, redirect to the index page with an
+        appropriate error message.
+        """
         try:
             selected_question = self.get_queryset().get(pk=kwargs["pk"])
         except Question.DoesNotExist:
@@ -84,7 +114,14 @@ class ResultsView(generic.DetailView):
 
 
 def vote(request, question_id):
-    """Handle user votes in a Django application."""
+    """
+    Handle user votes in a Django application.
+
+    This function processes the user's vote for a specific choice in a poll.
+    It ensures that the user hasn't already voted and updates the vote count
+    accordingly. If the user has already voted or hasn't selected a choice,
+    an error message is displayed.
+    """
     question = get_object_or_404(Question, pk=question_id)
 
     # Check if user has already voted per poll

@@ -2,8 +2,6 @@
 a Django web application. """
 
 from django.urls import path
-from django.http import HttpResponseRedirect
-
 from . import views
 
 app_name = "polls"
