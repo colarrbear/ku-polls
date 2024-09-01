@@ -15,7 +15,6 @@ from pathlib import Path
 from decouple import config, Csv
 from dj_database_url import parse as db_url
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,9 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY", default='fake-secret-key')
-                    # default='django-insecure-fzt4+lhszh6g3hc5w^bul$v8by7nty4dk*@7nz5pgl7wvy&!@f')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+    # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS',
@@ -80,10 +78,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': config('DATABASE_URL',
-                      default='sqlite:///' + os.path.join(str(BASE_DIR)) + 'db.sqlite3',
-                      cast=db_url
-                      ),
-}
+                      default='sqlite:///' + os.path.join(str(BASE_DIR))
+                              + 'db.sqlite3', cast=db_url),}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',

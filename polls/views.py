@@ -32,23 +32,18 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
-    """
-    This function retrieves questions that have been published
-    based on the current time.
-    """
+    """Display the details of a poll."""
+
     model = Question
     template_name = "polls/detail.html"
 
     def get_queryset(self):
-        """
-        Excludes any questions that aren't published yet.
-        """
+        """Excludes any questions that aren't published yet."""
         return Question.objects.filter(pub_date__lte=timezone.now())
 
     def get(self, request, *args, **kwargs):
-        """
-        Based on below document, if poll is not published or closed,
-        redirect to index page.
+        """If poll is not published or closed, redirect to index page.
+
         https://docs.djangoproject.com/en/5.1/ref/class-based-views/base/
         """
         try:
@@ -68,17 +63,13 @@ class DetailView(generic.DetailView):
 
 
 class ResultsView(generic.DetailView):
-    """
-    Defines a view for displaying poll results and a function for
-    handling user votes in a Django application.
-    """
+    """Result view displays the results of a poll."""
+
     model = Question
     template_name = "polls/results.html"
 
     def get(self, request, *args, **kwargs):
-        """
-        This function retrieves the results for a specific question.
-        """
+        """Get the question and check if it is published."""
         try:
             selected_question = self.get_queryset().get(pk=kwargs["pk"])
         except Question.DoesNotExist:
@@ -93,10 +84,7 @@ class ResultsView(generic.DetailView):
 
 
 def vote(request, question_id):
-    """
-    A view function named `vote` in a Django polling application.
-    This function is responsible for handling user votes on a specific question.
-    """
+    """Handle user votes in a Django application."""
     question = get_object_or_404(Question, pk=question_id)
 
     # Check if user has already voted per poll
