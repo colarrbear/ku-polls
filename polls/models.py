@@ -37,7 +37,6 @@ class Question(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
-
     def __str__(self):
         """
         return: The `__str__` method returns the question text.
