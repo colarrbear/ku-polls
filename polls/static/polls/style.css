@@ -1,9 +1,232 @@
 /* Styling the appearance of the HTML elements on a webpage. */
 
-li a {
-    color: green;
+.question-link, .result-link {
+    color: #5C4033;
+    text-decoration: none;
+}
+
+.question-link:hover, .result-link:hover {
+    text-decoration: underline;
 }
 
 body {
     background: white url("images/background.png") no-repeat;
+}
+
+/*remove bullet points*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.question-row {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* card styling for each question */
+.question-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-right: 16px;
+    flex: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+
+.question-container {
+    padding: 16px;
+}
+
+/* Style for the messages */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.messages li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+
+/*for detail*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #5C4033;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* link */
+.question-link, .result-link, .back-link {
+    color: #5C4033;
+    text-decoration: none;
+}
+
+.question-link:hover, .result-link:hover, .back-link:hover {
+    text-decoration: underline;
+}
+
+/* form */
+.poll-form {
+    margin-bottom: 20px;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+legend h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #5C4033;
+}
+
+.error-message {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.choices {
+    margin-top: 10px;
+}
+
+.choice {
+    margin-bottom: 10px;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+}
+
+.submit-button {
+    background-color: #5C4033;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background-color: #4a2e1e;
+}
+
+.links {
+    margin-top: 20px;
+}
+
+.question-card, .result-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-row {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    color: #5C4033;
+}
+
+.question-card {
+    margin-right: 16px;
+    flex: 1;
+}
+
+.result-card {
+    white-space: nowrap;
+}
+
+.question-container {
+    padding: 16px;
+}
+
+/* messages */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.messages li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #5C4033;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.poll-status {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.poll-form {
+    margin-top: 20px;
+}
+
+.submit-button {
+    margin-top: 10px;
+}
+
+.links {
+    margin-top: 20px;
 }
