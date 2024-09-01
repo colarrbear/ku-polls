@@ -78,19 +78,16 @@ class ResultsView(generic.DetailView):
     def get(self, request, *args, **kwargs):
         """
         This function retrieves the results for a specific question.
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
         """
         try:
-            selected_question = get_object_or_404(Question, pk=kwargs["pk"])
-        except Http404:
+            selected_question = self.get_queryset().get(pk=kwargs["pk"])
+        except Question.DoesNotExist:
             messages.error(request, "Question does not exist.")
             return redirect("polls:index")
-        # Check if the question is published
+
+            # Check if the question is published
         if not selected_question.is_published():
-            messages.error(request, "Question is not published.")
+            messages.error(request, "This question is not yet published.")
             return redirect("polls:index")
         return super().get(request, *args, **kwargs)
 
