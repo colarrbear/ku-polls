@@ -1,4 +1,3 @@
- [![Django CI](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml)
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
 additional features.
@@ -12,7 +11,7 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 Requires Python 3.10 or newer.  Required Python packages are listed in [requirements.txt](./requirements.txt). 
 
 ## Installation and Configuration
-Check from [Install and Configure](Installation.md)
+Check from [Installation and Configuration](https://github.com/colarrbear/ku-polls/wiki/Installation-and-Configuration)
 
 ## Running the Application
 
