@@ -1,53 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--{% load static %}-->
-<!--<head>-->
-<!--    <title>Ku-Polls</title>-->
-<!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
-<!--</head>-->
-
-<!--<body>-->
-<!--&lt;!&ndash; Display Django messages if any &ndash;&gt;-->
-<!--{% if messages %}-->
-<!--<ul class="messages">-->
-<!--    {% for message in messages %}-->
-<!--    <li-->
-<!--    {% if message.tags %} class="{{ message.tags }}"{% endif %}>-->
-<!--    {{ message }}-->
-<!--    </li>-->
-<!--    {% endfor %}-->
-<!--</ul>-->
-<!--{% endif %}-->
-
-<!--{% if latest_question_list %}-->
-<!--<div class="question-container">-->
-<!--    {% for question in latest_question_list %}-->
-<!--    <div class="question-row">-->
-<!--        <div class="question-card">-->
-<!--            <a href="{% url 'polls:detail' question.id %}"-->
-<!--               class="question-link">{{ question.question_text }}</a>-->
-<!--            &lt;!&ndash; Display the poll status &ndash;&gt;-->
-<!--            <p>-->
-<!--                {% if question.can_vote %}-->
-<!--                    Poll Status: Available-->
-<!--                {% else %}-->
-<!--                    Poll Status: Closed-->
-<!--                {% endif %}-->
-<!--            </p>-->
-<!--        </div>-->
-<!--        <div class="result-card">-->
-<!--            <a href="{% url 'polls:results' question.id %}"-->
-<!--               class="result-link">Results</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    {% endfor %}-->
-<!--</div>-->
-<!--{% else %}-->
-<!--<p>No polls are available.</p>-->
-<!--{% endif %}-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
@@ -57,45 +7,39 @@
 </head>
 
 <body>
-<!-- Display Django messages if any -->
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li
-    {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-    {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
+    <div class="container">
+        <h1>Ku-Polls</h1>
 
-{% if latest_question_list %}
-<div class="question-container">
-    {% for question in latest_question_list %}
-    <div class="question-row">
-        <div class="question-card">
-            <a href="{% url 'polls:detail' question.id %}"
-               class="question-link">{{ question.question_text }}</a>
-            <!-- Display the poll status -->
-            <p class="poll-status">
-                {% if question.can_vote %}
-                    Poll Status: Available
-                {% else %}
-                    Poll Status: Closed
-                {% endif %}
-            </p>
-            <div class="question-actions">
-                {% if question.can_vote %}
-                <a href="{% url 'polls:detail' question.id %}" class="vote-button">Vote</a>
-                {% endif %}
-                <a href="{% url 'polls:results' question.id %}" class="result-button">Results</a>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if latest_question_list %}
+        <div class="question-container">
+            {% for question in latest_question_list %}
+            <div class="question-card">
+                <h2 class="question-text">{{ question.question_text }}</h2>
+                <p class="poll-status">
+                    Status: {% if question.can_vote %}Available{% else %}Closed{% endif %}
+                </p>
+                <div class="question-actions">
+                    {% if question.can_vote %}
+                    <a href="{% url 'polls:detail' question.id %}" class="vote-button">Vote</a>
+                    {% endif %}
+                    <a href="{% url 'polls:results' question.id %}" class="result-button">Results</a>
+                </div>
             </div>
+            {% endfor %}
         </div>
+        {% else %}
+        <p>No polls are available.</p>
+        {% endif %}
     </div>
-    {% endfor %}
-</div>
-{% else %}
-<p>No polls are available.</p>
-{% endif %}
 </body>
 </html>
