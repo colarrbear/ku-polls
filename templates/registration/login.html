@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<body>
+<h2>Login</h2>
+
+<!--{% if messages %}-->
+<!--{% for message in messages %}-->
+<!--<p class="{{msg.tags}}">{{msg}}</p>-->
+<!--{% endfor %}-->
+<!--{% endif %}-->
+<!--{% if next %}-->
+
+ {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+<p>Next, you need to log in to access this page.</p>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit">Login</button>
+    <input type="hidden" name="next" value="{{next}}"/>
+</form>
+</body>
+</html>
