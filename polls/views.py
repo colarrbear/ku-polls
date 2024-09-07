@@ -26,7 +26,7 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
-    """Display the details of a poll."""
+    """Display the choices for a poll and allow voting."""
 
     model = Question
     template_name = "polls/detail.html"
@@ -54,6 +54,7 @@ class DetailView(generic.DetailView):
         if not selected_question.can_vote():
             messages.error(request, "Question is closed.")
             return redirect("polls:index")
+        # Render the page
         return super().get(request, *args, **kwargs)
 
 
@@ -104,13 +105,38 @@ def vote(request, question_id):
                 "error_message": "You didn't select a choice.",
             }
         )
-    else:
-        selected_choice.votes = F("votes") + 1
-        selected_choice.save()
 
-        # mark this user as having voted
-        request.session[f'has_voted_{question_id}'] = True
+    # Reference to the current user
+    this_user = request.user
 
-        return HttpResponseRedirect(
-            reverse("polls:results", args=(question.id,))
-        )
+    # Get the user's vote
+    try:
+        # vote = this_user.vote_set.get(choice__question=question)
+        vote = Vote.objects.get(user=this_user, choice__question=question)
+        # user has a vote for this question! update his choice.
+        vote.choice = selected_choice
+        vote.save()
+        messages.success(request, "Your vote has been updated.")
+    except Vote.DoesNotExist:
+        # does not have a vote yet
+        vote = Vote.objects.create(user=this_user, choice=selected_choice)
+        # automatically saved
+        messages.success((f"You"))
+
+
+    # if the user has a vote for this question:
+    #     change the vote in his vote
+    #     save the vote
+    # else:
+    # doesn't have a vote for this question
+    #     create a new vote
+
+    selected_choice.votes = F("votes") + 1
+    selected_choice.save()
+
+    # mark this user as having voted
+    # request.session[f'has_voted_{question_id}'] = True
+
+    return HttpResponseRedirect(
+        reverse("polls:results", args=(question.id,))
+    )

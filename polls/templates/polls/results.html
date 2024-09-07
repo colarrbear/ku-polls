@@ -64,6 +64,10 @@
 </head>
 <body>
     <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags %}
+
         <h1>{{ question.question_text }}</h1>
 
         <table>
