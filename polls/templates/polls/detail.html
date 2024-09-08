@@ -3,29 +3,34 @@
 {% block title %}{{ question.question_text }}{% endblock %}
 
 {% block content %}
-    <form action="{% url 'polls:vote' question.id %}" method="post" class="poll-form">
-        {% csrf_token %}
-        <fieldset>
-            <legend>
-                <h1>{{ question.question_text }}</h1>
-            </legend>
-            {% if error_message %}
-                <p class="error-message">{{ error_message }}</p>
-            {% endif %}
-            <div class="choices">
-                {% for choice in question.choice_set.all %}
-                    <div class="choice">
-                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
-                    </div>
-                {% endfor %}
+<form action="{% url 'polls:vote' question.id %}" method="post"
+      class="poll-form">
+    {% csrf_token %}
+    <fieldset>
+        <legend>
+            <h1>{{ question.question_text }}</h1>
+        </legend>
+        {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+        <div class="choices">
+            {% for choice in question.choice_set.all %}
+            <div class="choice">
+                <input type="radio"
+                       name="choice"
+                       id="choice{{ forloop.counter }}"
+                       value="{{ choice.id }}"
+                       {% if choice == select_choice %}checked{% endif %}>
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
             </div>
-        </fieldset>
-        <input type="submit" value="Vote" class="submit-button">
-    </form>
+            {% endfor %}
+        </div>
+    </fieldset>
+    <input type="submit" value="Vote" class="submit-button">
+</form>
 
-    <div class="links">
-        <a href="{% url 'polls:results' question.id %}" class="button result-link">View Results</a>
-        <a href="{% url 'polls:index' %}" class="button back-link">Back to List of Polls</a>
-    </div>
+<div class="links">
+    <a href="{% url 'polls:results' question.id %}" class="button result-link">View Results</a>
+    <a href="{% url 'polls:index' %}" class="button back-link">Back to List of Polls</a>
+</div>
 {% endblock %}
