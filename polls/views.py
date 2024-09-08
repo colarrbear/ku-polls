@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import Choice, Question
+from .models import Choice, Question, Vote
 
 
 class IndexView(generic.ListView):
@@ -83,16 +83,9 @@ def vote(request, question_id):
     """Handle user votes in a Django application."""
     question = get_object_or_404(Question, pk=question_id)
 
-    # # Check if user has already voted per poll
-    # if request.session.get(f'has_voted_{question_id}', False):
-    #     return render(
-    #         request,
-    #         "polls/detail.html",
-    #         {
-    #             "question": question,
-    #             "error_message": "You have already voted.",
-    #         }
-    #     )
+    if not question.can_vote():
+        messages.error(request, "This question is not published yet.")
+        return HttpResponseRedirect(reverse("polls:index"))
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
@@ -118,11 +111,11 @@ def vote(request, question_id):
         vote.save()
         messages.success(request, "Your vote has been updated.")
     except Vote.DoesNotExist:
-        # does not have a vote yet
+        # does not have a vote yet, create a new one
         vote = Vote.objects.create(user=this_user, choice=selected_choice)
+        vote.save()
         # automatically saved
-        messages.success((f"You"))
-
+        messages.success(request, "Your vote has been recorded.")
 
     # if the user has a vote for this question:
     #     change the vote in his vote
@@ -130,12 +123,6 @@ def vote(request, question_id):
     # else:
     # doesn't have a vote for this question
     #     create a new vote
-
-    selected_choice.votes = F("votes") + 1
-    selected_choice.save()
-
-    # mark this user as having voted
-    # request.session[f'has_voted_{question_id}'] = True
 
     return HttpResponseRedirect(
         reverse("polls:results", args=(question.id,))

@@ -60,13 +60,23 @@
         .back-button:hover {
             background-color: #4a2e1e;
         }
+        .message {
+            padding: 10px;
+            background-color: #e7f3fe;
+            color: #31708f;
+            border: 1px solid #bce8f1;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         {% if messages %}
-        {% for message in messages %}
-        {% if message.tags %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
         <h1>{{ question.question_text }}</h1>
 
