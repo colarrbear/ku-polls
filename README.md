@@ -70,8 +70,9 @@ Check from [Installation and Configuration](https://github.com/colarrbear/ku-pol
 ## Demo User Account
 | Username | Password |
 |----------|----------|
-| tbc      | tbc  |
-| tbc     | tbc |
+| demo1    | hackme11 |
+| demo2    | hackme22 |
+| demo3    | hackme33 |
 
 
 ## Project Documents
