@@ -1,26 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <title>Ku-Polls</title>
-    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-</head>
+{% extends 'polls/base.html' %}
 
-<body>
-    <div class="container">
-        <h1>Ku-Polls</h1>
+{% block title %}Home - KU Polls{% endblock %}
 
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                {{ message }}
-            </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
-        {% if latest_question_list %}
+{% block content %}
+    {% if latest_question_list %}
         <div class="question-container">
             {% for question in latest_question_list %}
             <div class="question-card">
@@ -37,9 +20,7 @@
             </div>
             {% endfor %}
         </div>
-        {% else %}
+    {% else %}
         <p>No polls are available.</p>
-        {% endif %}
-    </div>
-</body>
-</html>
+    {% endif %}
+{% endblock %}

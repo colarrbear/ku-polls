@@ -1,11 +1,15 @@
-"""Unit tests for the polls app."""
+"""Unit tod for the polls app."""
 import datetime
+import django.test
 
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate  # to "login" a user using code
+from mysite import settings
 from django.utils import timezone
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Question
+from .models import Question, Choice
 
 
 class QuestionModelTests(TestCase):
@@ -154,3 +158,153 @@ class QuestionDetailViewTests(TestCase):
         url = reverse("polls:detail", args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+
+class UserAuthTest(django.test.TestCase):
+
+    def setUp(self):
+        #superclass setUp creates a Client object and initializes test database
+        super().setUp()
+        self.username = "testuser"
+        self.password = "FatChance!"
+        self.user1 = User.objects.create_user(
+            username=self.username,
+            password=self.password,
+            email="testuser@nowhere.com"
+        )
+        self.user1.first_name = "Tester"
+        self.user1.save()
+        # we need a poll question to test voting
+        q = Question.objects.create(question_text="First Poll Question")
+        q.save()
+        # a few choices
+        for n in range(1, 4):
+            choice = Choice(choice_text=f"Choice {n}", question=q)
+            choice.save()
+        self.question = q
+
+    def test_logout(self):
+        """A user can logout using the logout url.
+
+        As an authenticated user,
+        when I visit /accounts/logout/
+        then I am logged out
+        and then redirected to the login page.
+        """
+        logout_url = reverse("logout")
+        # Authenticate the user.
+        # We want to logout this user, so we need to associate the
+        # user user with a session.  Setting client.user = ... doesn't work.
+        # Use Client.login(username, password) to do that.
+        # Client.login returns true on success
+        self.assertTrue(
+            self.client.login(username=self.username, password=self.password)
+        )
+        # visit the logout page
+        form_data = {}
+        response = self.client.post(logout_url, form_data)
+        self.assertEqual(302, response.status_code)
+
+        # should redirect us to the login page
+        self.assertRedirects(response, reverse(settings.LOGOUT_REDIRECT_URL))
+
+    def test_login_view(self):
+        """A user can login using the login view."""
+        login_url = reverse("login")
+        # Can get the login page
+        response = self.client.get(login_url)
+        self.assertEqual(200, response.status_code)
+        # Can login using a POST request
+        # usage: client.post(url, {'key1":"value", "key2":"value"})
+        form_data = {"username": "testuser",
+                     "password": "FatChance!"
+                     }
+        response = self.client.post(login_url, form_data)
+        # after successful login, should redirect browser somewhere
+        self.assertEqual(302, response.status_code)
+        # should redirect us to the polls index page ("polls:index")
+        self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
+
+    def test_auth_required_to_vote(self):
+        """Authentication is required to submit a vote.
+
+        As an unauthenticated user,
+        when I submit a vote for a question,
+        then I am redirected to the login page
+          or I receive a 403 response (FORBIDDEN)
+        """
+        vote_url = reverse('polls:vote', args=[self.question.id])
+
+        # what choice to vote for?
+        choice = self.question.choice_set.first()
+        # the polls detail page has a form, each choice is identified by its id
+        form_data = {"choice": f"{choice.id}"}
+        response = self.client.post(vote_url, form_data)
+        # should be redirected to the login page
+        self.assertEqual(response.status_code, 302)  # could be 303
+        # include reverse('login') does not include
+
+        login_url = reverse('login')
+        expected_url = f"{login_url}?next={vote_url}"
+        self.assertEqual(response.url, expected_url)
+        # the query parameter ?next=/polls/1/vote/
+        # self.assertRedirects(response, reverse('login') )
+        # How to fix it?
+        # login_with_next = f"{reverse('login')}?next={vote_url}"
+        self.assertRedirects(response, expected_url)
+
+    def test_successful_login(self):
+        """A user can successfully login using valid credentials."""
+        login_url = reverse("login")
+        form_data = {"username": self.username, "password": self.password}
+        response = self.client.post(login_url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/index.html")
+
+    def test_failed_login(self):
+        """A user cannot login using invalid credentials."""
+        login_url = reverse("login")
+        form_data = {"username": self.username, "password": "wrong_password"}
+        response = self.client.post(login_url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/login.html")
+        self.assertContains(response,
+                            "Please enter a correct username and password.")
+
+def test_voting_with_authentication(self):
+    """An authenticated user can submit a vote."""
+    vote_url = reverse('polls:vote', args=[self.question.id])
+    choice = self.question.choice_set.first()
+    form_data = {"choice": f"{choice.id}"}
+
+    # Login the user
+    self.client.login(username=self.username, password=self.password)
+
+    # Submit a vote
+    response = self.client.post(vote_url, form_data)
+
+    # Check that the vote was recorded
+    self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+    self.assertEqual(choice.votes, 1)
+
+def test_changing_vote(self):
+    """An authenticated user can change their vote during the voting period."""
+    vote_url = reverse('polls:vote', args=[self.question.id])
+    choice1 = self.question.choice_set.first()
+    choice2 = self.question.choice_set.last()
+    form_data = {"choice": f"{choice1.id}"}
+
+    # Login the user
+    self.client.login(username=self.username, password=self.password)
+
+    # Submit an initial vote
+    self.client.post(vote_url, form_data)
+
+    # Change the vote
+    form_data = {"choice": f"{choice2.id}"}
+    response = self.client.post(vote_url, form_data)
+
+    # Check that the vote was updated
+    self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+    self.assertEqual(choice1.votes, 0)
+    self.assertEqual(choice2.votes, 1)
