@@ -253,3 +253,58 @@ class UserAuthTest(django.test.TestCase):
         # login_with_next = f"{reverse('login')}?next={vote_url}"
         self.assertRedirects(response, expected_url)
 
+    def test_successful_login(self):
+        """A user can successfully login using valid credentials."""
+        login_url = reverse("login")
+        form_data = {"username": self.username, "password": self.password}
+        response = self.client.post(login_url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "polls/index.html")
+
+    def test_failed_login(self):
+        """A user cannot login using invalid credentials."""
+        login_url = reverse("login")
+        form_data = {"username": self.username, "password": "wrong_password"}
+        response = self.client.post(login_url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/login.html")
+        self.assertContains(response,
+                            "Please enter a correct username and password.")
+
+def test_voting_with_authentication(self):
+    """An authenticated user can submit a vote."""
+    vote_url = reverse('polls:vote', args=[self.question.id])
+    choice = self.question.choice_set.first()
+    form_data = {"choice": f"{choice.id}"}
+
+    # Login the user
+    self.client.login(username=self.username, password=self.password)
+
+    # Submit a vote
+    response = self.client.post(vote_url, form_data)
+
+    # Check that the vote was recorded
+    self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+    self.assertEqual(choice.votes, 1)
+
+def test_changing_vote(self):
+    """An authenticated user can change their vote during the voting period."""
+    vote_url = reverse('polls:vote', args=[self.question.id])
+    choice1 = self.question.choice_set.first()
+    choice2 = self.question.choice_set.last()
+    form_data = {"choice": f"{choice1.id}"}
+
+    # Login the user
+    self.client.login(username=self.username, password=self.password)
+
+    # Submit an initial vote
+    self.client.post(vote_url, form_data)
+
+    # Change the vote
+    form_data = {"choice": f"{choice2.id}"}
+    response = self.client.post(vote_url, form_data)
+
+    # Check that the vote was updated
+    self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+    self.assertEqual(choice1.votes, 0)
+    self.assertEqual(choice2.votes, 1)
