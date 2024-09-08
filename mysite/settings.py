@@ -120,6 +120,8 @@ AUTHENTICATION_BACKENDS = [
     # username & password authentication
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+# redirect visitor after login or logout
 LOGIN_REDIRECT_URL = 'polls:index'  # after login, show list of polls
 LOGOUT_REDIRECT_URL = 'login'       # after logout, return to login page
 
