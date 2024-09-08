@@ -1,115 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ question.question_text }}</title>
-    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('{% static "polls/images/background.png" %}');
-            background-size: cover;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 20px;
-            color: #5C4033;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(92, 64, 51, 0.1);
-        }
-        h1 {
-            color: #5C4033;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .poll-form {
-            margin-top: 20px;
-        }
-        fieldset {
-            border: none;
-            padding: 0;
-            margin: 0;
-        }
-        .choices {
-            margin-top: 10px;
-        }
-        .choice {
-            margin-bottom: 10px;
-        }
-        input[type="radio"] {
-            margin-right: 8px;
-        }
-        .submit-button {
-            background-color: #5C4033;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-        .submit-button:hover {
-            background-color: #4a2e1e;
-        }
-        .error-message {
-            color: #d9534f;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .links {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .result-link, .back-link {
-            color: #5C4033;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        .result-link:hover, .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <form action="{% url 'polls:vote' question.id %}" method="post" class="poll-form">
-            {% csrf_token %}
-            <fieldset>
-                <legend>
-                    <h1>{{ question.question_text }}</h1>
-                </legend>
-                {% if error_message %}
+{% extends 'polls/base.html' %}
+
+{% block title %}{{ question.question_text }}{% endblock %}
+
+{% block content %}
+    <form action="{% url 'polls:vote' question.id %}" method="post" class="poll-form">
+        {% csrf_token %}
+        <fieldset>
+            <legend>
+                <h1>{{ question.question_text }}</h1>
+            </legend>
+            {% if error_message %}
                 <p class="error-message">{{ error_message }}</p>
-                {% endif %}
-                <div class="choices">
-                    {% for choice in question.choice_set.all %}
+            {% endif %}
+            <div class="choices">
+                {% for choice in question.choice_set.all %}
                     <div class="choice">
-                        <input type="radio"
-                               name="choice"
-                               id="choice{{ forloop.counter }}"
-                               value="{{ choice.id }}"
-                               {% if choice == select_choice %}checked{% endif %}>
+                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
                     </div>
-                    {% endfor %}
-                </div>
-            </fieldset>
-            <input type="submit" value="Vote" class="submit-button">
-        </form>
+                {% endfor %}
+            </div>
+        </fieldset>
+        <input type="submit" value="Vote" class="submit-button">
+    </form>
 
-        <div class="links">
-            <a href="{% url 'polls:results' question.id %}" class="result-link">View Results</a>
-            <a href="{% url 'polls:index' %}" class="back-link">Back to List of Polls</a>
-        </div>
+    <div class="links">
+        <a href="{% url 'polls:results' question.id %}" class="button result-link">View Results</a>
+        <a href="{% url 'polls:index' %}" class="button back-link">Back to List of Polls</a>
     </div>
-</body>
-</html>
+{% endblock %}
