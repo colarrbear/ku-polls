@@ -41,11 +41,21 @@ class DetailView(generic.DetailView):
 
         https://docs.djangoproject.com/en/5.1/ref/class-based-views/base/
         """
+        this_user = request.user
+
         try:
             selected_question = get_object_or_404(Question, pk=kwargs["pk"])
         except Http404:
             messages.error(request, "Question does not exist.")
             return redirect("polls:index")
+        if not this_user.is_authenticated:  # user is not logged in
+            select_choice = ""
+        else:  # user is logged in
+            try:
+                vote = Vote.objects.get(user=this_user, choice__question=selected_question)
+                select_choice = vote.choice
+            except Vote.DoesNotExist:  # user has not voted yet
+                select_choice = ""
         # Check if the question is published
         if not selected_question.is_published():
             messages.error(request, "Question is not published.")

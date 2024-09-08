@@ -11,7 +11,7 @@
         <h1>KU Polls</h1>
         {% if user.is_authenticated %}
             Welcome back, {{ user.username }}!
-            <form action="{% url 'logout' %}" method="post">
+            <form action="{% url 'logout' %}" method="post" class="logout-form">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
         {% else %}
