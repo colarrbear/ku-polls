@@ -3,7 +3,6 @@ import datetime
 import django.test
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate  # to "login" a user using code
 from mysite import settings
 from django.utils import timezone
 from django.test import TestCase
@@ -161,9 +160,10 @@ class QuestionDetailViewTests(TestCase):
 
 
 class UserAuthTest(django.test.TestCase):
+    """Tests for user authentication."""
 
     def setUp(self):
-        #superclass setUp creates a Client object and initializes test database
+        """Superclass setup creates Client obj & initializes test database."""
         super().setUp()
         self.username = "testuser"
         self.password = "FatChance!"
@@ -271,6 +271,7 @@ class UserAuthTest(django.test.TestCase):
         self.assertContains(response,
                             "Please enter a correct username and password.")
 
+
 def test_voting_with_authentication(self):
     """An authenticated user can submit a vote."""
     vote_url = reverse('polls:vote', args=[self.question.id])
@@ -284,8 +285,10 @@ def test_voting_with_authentication(self):
     response = self.client.post(vote_url, form_data)
 
     # Check that the vote was recorded
-    self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+    self.assertRedirects(response,
+                         reverse('polls:results', args=[self.question.id]))
     self.assertEqual(choice.votes, 1)
+
 
 def test_changing_vote(self):
     """An authenticated user can change their vote during the voting period."""
@@ -305,6 +308,7 @@ def test_changing_vote(self):
     response = self.client.post(vote_url, form_data)
 
     # Check that the vote was updated
-    self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+    self.assertRedirects(response,
+                         reverse('polls:results', args=[self.question.id]))
     self.assertEqual(choice1.votes, 0)
     self.assertEqual(choice2.votes, 1)
