@@ -2,9 +2,9 @@ name: Run Flake8 & Flake8 docstrings
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main", "iteration4" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main", "iteration4" ]
 
 permissions:
   contents: read
@@ -25,6 +25,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 flake8-docstrings
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Create Flake8 config
+      run: |
+        echo "[flake8]" > .flake8
+        echo "exclude = __init__.py,*/migrations/*" >> .flake8
+        echo "ignore = D100,D101,D104" >> .flake8
+        echo "per-file-ignores =" >> .flake8
+        echo "    models.py:D100,D101,D102,D105,D106" >> .flake8
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

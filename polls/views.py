@@ -1,6 +1,7 @@
 """Define views for the polls app."""
 import logging
-from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
+from django.contrib.auth.signals import user_logged_in, user_logged_out, \
+    user_login_failed
 from django.utils.timezone import now
 from django.dispatch import receiver
 from django.urls import reverse
@@ -10,25 +11,36 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from pymysql import get_client_info
-
 from .models import Choice, Question, Vote
 
 logger = logging.getLogger('polls')
 
+
 @receiver(user_logged_in)
 def user_logged_in_handler(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} logged in at {now()} from IP {get_client_ip(request)}.')
+    """Log user login events."""
+    logger.info(
+        f'User {user.username} logged in at {now()} from '
+        f'IP {get_client_ip(request)}.')
+
 
 @receiver(user_logged_out)
 def user_logged_out_handler(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} logged out at {now()} from IP {get_client_ip(request)}.')
+    """Log user logout events."""
+    logger.info(
+        f'User {user.username} logged out at {now()} from '
+        f'IP {get_client_ip(request)}.')
+
 
 @receiver(user_login_failed)
 def user_login_failed_handler(sender, credentials, request, **kwargs):
+    """Log unsuccessful login attempts."""
     ip = get_client_ip(request)
     username = credentials.get('username', 'unknown')
-    logger.warning(f'Unsuccessful login attempt for username {username} at {now()} from IP {ip}.')
+    logger.warning(
+        f'Unsuccessful login attempt for '
+        f'username {username} at {now()} from IP {ip}.')
+
 
 class IndexView(generic.ListView):
     """Display five most recent polls."""
@@ -70,7 +82,8 @@ class DetailView(generic.DetailView):
             select_choice = ""
         else:  # user is logged in
             try:
-                vote = Vote.objects.get(user=this_user, choice__question=selected_question)
+                vote = Vote.objects.get(user=this_user,
+                                        choice__question=selected_question)
                 select_choice = vote.choice
             except Vote.DoesNotExist:  # user has not voted yet
                 select_choice = ""
@@ -110,6 +123,7 @@ class ResultsView(generic.DetailView):
             return redirect("polls:index")
         return super().get(request, *args, **kwargs)
 
+
 @login_required
 def vote(request, question_id):
     """Handle user votes in a Django application."""
@@ -117,13 +131,17 @@ def vote(request, question_id):
 
     if not question.can_vote():
         messages.error(request, "This question is not published yet.")
-        logger.warning(f'User {request.user.username} attempted to vote on a closed question {question_id}.')
+        logger.warning(
+            f'User {request.user.username} attempted to vote on'
+            f' a closed question {question_id}.')
         return HttpResponseRedirect(reverse("polls:index"))
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
-        logger.error(f'User {request.user.username} attempted to vote with invalid choice on question {question_id}.')
+        logger.error(
+            f'User {request.user.username} attempted '
+            f'to vote with invalid choice on question {question_id}.')
         return render(
             request,
             "polls/detail.html",
@@ -144,25 +162,23 @@ def vote(request, question_id):
         vote.choice = selected_choice
         vote.save()
         messages.success(request, "Your vote has been updated.")
-        logger.info(f'User {this_user.username} updated vote to choice {selected_choice.id} for question {question_id}.')
+        logger.info(
+            f'User {this_user.username} updated vote '
+            f'to choice {selected_choice.id} for question {question_id}.')
     except Vote.DoesNotExist:
         # does not have a vote yet, create a new one
         vote = Vote.objects.create(user=this_user, choice=selected_choice)
         vote.save()
         # automatically saved
         messages.success(request, "Your vote has been recorded.")
-        logger.info(f'User {this_user.username} voted for choice {selected_choice.id} on question {question_id}.')
-
-    # if the user has a vote for this question:
-    #     change the vote in his vote
-    #     save the vote
-    # else:
-    # doesn't have a vote for this question
-    #     create a new vote
+        logger.info(
+            f'User {this_user.username} voted for '
+            f'choice {selected_choice.id} on question {question_id}.')
 
     return HttpResponseRedirect(
         reverse("polls:results", args=(question.id,))
     )
+
 
 def get_client_ip(request):
     """Get the visitor’s IP address using request headers."""

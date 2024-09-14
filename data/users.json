@@ -4,7 +4,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$870000$GAFmTC97zpPQAUJgVUtUcx$uvRtcdZjfsqvygvWlmWlcdbM9pdvYYGj9LdMHyIhFrc=",
-    "last_login": "2024-09-08T12:12:29.414Z",
+    "last_login": "2024-09-14T15:07:51.627Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -22,7 +22,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$870000$MZUWYjecrs8cYxsNAe3ni7$CqlQrhj+dbp3xr5Y7/hSDszSDQhuCTffdBym52uF11U=",
-    "last_login": "2024-09-08T11:51:42.242Z",
+    "last_login": "2024-09-08T14:05:08.829Z",
     "is_superuser": false,
     "username": "may",
     "first_name": "",
@@ -40,7 +40,7 @@
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$870000$mYdUdIRReWgEYXu5h3z2qJ$dXdZDakcFCfEE1rGcn2BjNaqMgABnjn+muu4uMdOt4E=",
-    "last_login": "2024-09-08T12:02:55.548Z",
+    "last_login": "2024-09-08T13:40:59.863Z",
     "is_superuser": false,
     "username": "nano",
     "first_name": "",
