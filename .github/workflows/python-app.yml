@@ -2,9 +2,9 @@ name: Run Flake8 & Flake8 docstrings
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main", "iteration4" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main", "iteration4" ]
 
 permissions:
   contents: read
