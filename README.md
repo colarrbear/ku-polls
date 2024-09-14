@@ -1,8 +1,7 @@
 # KU Polls
 
-   [![Django CI](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml)
-   [![Run flake8](../../actions/workflows/run-flake8.yml/badge.svg)](../../actions/workflows/run-flake8.yml)
-  
+   [![Django CI](../../actions/workflows/django.yml/badge.svg)](../../actions/workflows/django.yml)
+   [![Run Flake8 & Flake8 docstrings](../../actions/workflows/python-app.yml/badge.svg)](../../actions/workflows/python-app.yml)  
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
 additional features.
