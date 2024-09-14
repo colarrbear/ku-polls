@@ -75,7 +75,7 @@ class DetailView(generic.DetailView):
 
         try:
             selected_question = get_object_or_404(Question, pk=kwargs["pk"])
-        except Http404:
+        except Http404 or Question.DoesNotExist:
             messages.error(request, "Question does not exist.")
             return redirect("polls:index")
         if not this_user.is_authenticated:  # user is not logged in
