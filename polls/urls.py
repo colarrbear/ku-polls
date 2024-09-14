@@ -1,6 +1,6 @@
 """Urls path for the `polls` app."""
 
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
@@ -14,4 +14,6 @@ urlpatterns = [
     path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
     # ex: /polls/5/vote/
     path("<int:question_id>/vote/", views.vote, name="vote"),
+    # Catch-all for non-integer pk values
+    re_path(r"^(?![\d]+/$).*$", views.IndexView.as_view(), name="index_redirect"),
 ]
