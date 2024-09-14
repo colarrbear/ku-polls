@@ -47,8 +47,7 @@
     ``` 
 
     - 6.3 Copy the output and paste it in the `.env` file as follows:
-   
-    ```terminal
+
     On Linux/MacOS:
     ```terminal
     cp sample.env .env
