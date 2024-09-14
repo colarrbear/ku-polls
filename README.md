@@ -1,4 +1,7 @@
-  [![Django CI](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml)
+# KU Polls
+
+   [![Django CI](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml)
+   [![Run flake8](../../actions/workflows/run-flake8.yml/badge.svg)](../../actions/workflows/run-flake8.yml)
   
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
@@ -87,6 +90,5 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 - [Iteration 3 Plan](../../wiki/Iteration-3-Plan)
 - [Iteration 4 Plan](../../wiki/Iteration-4-Plan)
 
-note: Iteration 3 and 4 is in progress.
 
 [django-tutorial](https://docs.djangoproject.com/en/5.1/intro/tutorial01/)
