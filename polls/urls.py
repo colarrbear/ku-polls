@@ -14,6 +14,9 @@ urlpatterns = [
     path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
     # ex: /polls/5/vote/
     path("<int:question_id>/vote/", views.vote, name="vote"),
+    path('signup/', views.signup, name='signup'),
     # Catch-all for non-integer pk values
-    re_path(r"^(?![\d]+/$).*$", views.IndexView.as_view(), name="index_redirect"),
+    re_path(r"^(?![\d]+/$).*$", views.IndexView.as_view(),
+            name="index_redirect"),
+
 ]

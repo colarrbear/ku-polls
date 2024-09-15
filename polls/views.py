@@ -11,6 +11,7 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from .models import Choice, Question, Vote
 
 logger = logging.getLogger('polls')
@@ -179,6 +180,17 @@ def vote(request, question_id):
         reverse("polls:results", args=(question.id,))
     )
 
+def signup(request):
+    """Register a new user."""
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User created successfully.")
+            return redirect("polls:index")
+    else:
+        form = UserCreationForm()
+    return render(request, "polls/signup.html", {"form": form})
 
 def get_client_ip(request):
     """Get the visitor’s IP address using request headers."""
