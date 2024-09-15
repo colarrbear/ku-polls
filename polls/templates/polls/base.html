@@ -9,32 +9,34 @@
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1><a href="{% url 'polls:index' %}">KU Polls</a></h1>
-            <nav>
-                {% if user.is_authenticated %}
-                    Welcome back, {{ user.username }}!
-                    <form action="{% url 'logout' %}" method="post" class="logout-form" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit">Logout</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}?next={{request.path}}">Login</a>
-                {% endif %}
-            </nav>
-        </div>
-    </header>
-
+<header>
     <div class="container">
-        {% block content %}
-        {% endblock %}
+        <h1><a href="{% url 'polls:index' %}">KU Polls</a></h1>
+        <nav>
+            {% if user.is_authenticated %}
+            Welcome back, {{ user.username }}!
+            <form action="{% url 'logout' %}" method="post" class="logout-form"
+                  style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'polls:signup' %}">Register</a>
+            <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+            {% endif %}
+        </nav>
     </div>
+</header>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 KU Polls. All Rights Reserved.</p>
-        </div>
-    </footer>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 KU Polls. All Rights Reserved.</p>
+    </div>
+</footer>
 </body>
 </html>
