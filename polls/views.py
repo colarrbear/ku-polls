@@ -180,6 +180,7 @@ def vote(request, question_id):
         reverse("polls:results", args=(question.id,))
     )
 
+
 def signup(request):
     """Register a new user."""
     if request.method == "POST":
@@ -191,6 +192,7 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, "polls/signup.html", {"form": form})
+
 
 def get_client_ip(request):
     """Get the visitor’s IP address using request headers."""
