@@ -4,6 +4,12 @@ source = polls/
 
 # Ignore certain paths:  /usr/lib, /usr/local, .local/, and env/
 
+include =  # include only the interested files
+    polls/views.py
+    polls/models.py
+    polls/urls.py
+
+
 omit =
     /usr/lib/*
     /usr/local/*
@@ -13,6 +19,7 @@ omit =
     manage.py
     mysite/*
     **/init.py
+    tests/*.py
 
 
 [report]  # ignore some lines in the report
