@@ -1,30 +1,28 @@
-[run]
-# Specify the source to measure
+[run]  # Measure branch coverage
 branch = True
-source = polls
 
-# Ignore certain paths:  /usr/lib, /usr/local, .local/, and env/
+cover_pylib = False
+# to include files from site-packages in coverage report
 
-include =  # include only the interested files
-    polls/views.py
-    polls/models.py
-    polls/urls.py
+# to include only test file in coverage report
+include =
+    polls/tests/*
 
 
+# to exclude some files from coverage report
 omit =
-    /usr/lib/*
-    /usr/local/*
-    .local/*
-    env/*
-    */migrations/*
-    manage.py
+    __init__.py
+    /usr/*
     mysite/*
-    **/init.py
-    */tests/*
+    polls/migrations/*
+    tests/*.py
+    env/*
+    polls/admin.py
+    polls/apps.py
+    .local/*
+    manage.py
 
-
-[report]  # ignore some lines in the report
+[report]  # to exclude some lines from coverage report
 exclude_lines =
-    pragma: no cover  # pragma is used to exclude a line from coverage
-    def __str__  # ignore __str__ methods
-    def __repr__  # ignore __repr__ methods
+    def __str__
+    def __repr__
