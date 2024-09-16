@@ -1,28 +1,33 @@
-[run]  # Measure branch coverage
+[run]
 branch = True
-
 cover_pylib = False
-# to include files from site-packages in coverage report
 
-# to include only test file in coverage report
+# include polls app files
 include =
-    polls/tests/*
+    polls/*.py
 
-
-# to exclude some files from coverage report
+# exclude migrations and tests
 omit =
-    __init__.py
-    /usr/*
-    mysite/*
-    polls/migrations/*
-    tests/*.py
-    env/*
-    polls/admin.py
-    polls/apps.py
-    .local/*
-    manage.py
+    # Python library files
+    /usr/lib/*
+    /usr/local/*
+    */.local/*
+    */env/*
 
-[report]  # to exclude some lines from coverage report
+    # Package __init__.py files
+    */__init__.py
+
+    # Django migration files
+    */migrations/*
+
+    # Django project configuration files (e.g., "mysite" is your config directory)
+    mysite/*
+
+    # manage.py file
+    */manage.py
+
+[report]
+# ignore __str__ and __repr__ methods
 exclude_lines =
     def __str__
     def __repr__
