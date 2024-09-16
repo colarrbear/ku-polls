@@ -39,6 +39,6 @@ jobs:
         python manage.py test
     - name: Run Coverage
       run: |
-        coverage run -m manage.py test
+        coverage run --branch -m unittest
         coverage report
         coverage html
