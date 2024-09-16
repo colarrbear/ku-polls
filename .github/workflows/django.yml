@@ -2,17 +2,15 @@ name: Run Unit tests
 
 on:
   push:
-    branches: [ "main", "iteration4" , "coverage" ]
+    branches: [ "main", "iteration4" ]
   pull_request:
-    branches: [ "main" , "iteration4" , "coverage" ]
+    branches: [ "main" , "iteration4" ]
 
 env:
   SECRET_KEY: random-secret-key-for-ci
   DEBUG: True
   ALLOWED_HOSTS: 'testserver'
   TIME_ZONE: 'Asia/Bangkok'
-  DJANGO_SETTINGS_MODULE: 'mysite.settings'
-
 
 jobs:
   build:
@@ -21,26 +19,26 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.11]
+        python-version: [ 3.11 ]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install coverage
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run Migrations and Tests
-      run: |
-        python manage.py makemigrations
-        python manage.py migrate
-        python manage.py test
-    - name: Run Coverage
-      run: |
-        coverage run --branch -m unittest
-        coverage report
-        coverage html
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install coverage
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Run Migrations and Tests
+        run: |
+          coverage run --branch -m unittest
+#          python manage.py makemigrations
+#          python manage.py migrate
+#          python manage.py test
+      - name: Upload coverage report
+        run: | 
+          coverage report

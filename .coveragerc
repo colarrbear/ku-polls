@@ -1,6 +1,7 @@
 [run]
 # Specify the source to measure
-source = polls/
+branch = True
+source = polls
 
 # Ignore certain paths:  /usr/lib, /usr/local, .local/, and env/
 
@@ -19,7 +20,7 @@ omit =
     manage.py
     mysite/*
     **/init.py
-    tests/*.py
+    */tests/*
 
 
 [report]  # ignore some lines in the report
