@@ -11,6 +11,8 @@ env:
   DEBUG: True
   ALLOWED_HOSTS: 'testserver'
   TIME_ZONE: 'Asia/Bangkok'
+  DJANGO_SETTINGS_MODULE: 'mysite.settings'
+
 
 jobs:
   build:
