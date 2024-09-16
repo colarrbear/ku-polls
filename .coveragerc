@@ -1,5 +1,4 @@
 [run]
-
 branch = True
 
 # Do not include Python library files in coverage run
@@ -12,10 +11,9 @@ include =
 # Files and directories to omit during coverage run
 omit =
     # Python library files
-    /usr/lib/*
-    /usr/local/*
+    /usr/*
     */.local/*
-    */env/*
+    env/*
 
     # Package __init__.py files
     */__init__.py
@@ -23,11 +21,12 @@ omit =
     # Django migration files
     */migrations/*
 
-    # Django project configuration files (e.g., "mysite" is your config directory)
+    # Django project configuration files
     mysite/*
 
     # manage.py file
-    */manage.py
+    manage.py
+    tests/*
 
 [report]
 # Ignore __str__ and __repr__ methods in coverage reporting
