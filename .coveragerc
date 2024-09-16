@@ -1,0 +1,22 @@
+[run]
+# Specify the source to measure
+source = polls/
+
+# Ignore certain paths:  /usr/lib, /usr/local, .local/, and env/
+
+omit =
+    /usr/lib/*
+    /usr/local/*
+    .local/*
+    env/*
+    */migrations/*
+    manage.py
+    mysite/*
+    **/init.py
+
+
+[report]  # ignore some lines in the report
+exclude_lines =
+    pragma: no cover  # pragma is used to exclude a line from coverage
+    def __str__  # ignore __str__ methods
+    def __repr__  # ignore __repr__ methods
